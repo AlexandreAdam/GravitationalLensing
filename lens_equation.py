@@ -33,9 +33,7 @@ def coordinates(N: int):
 
 
 def alpha_integral(theta, kappa):
-    """
-    Given a meshgrid of N pixel, this takes O(N^4) operations to compute
-    """
+    #TODO make this memory efficient
     N = theta.shape[0] # number of pixels
     assert N <= 32, "Shape is too large, N <= 32"
     theta_prime = np.stack([theta] * N, axis=-1)
@@ -66,17 +64,18 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     N = 32  # 32 is about the maximum the double integral can handle
     theta = coordinates(N)
-    # kappa = sis_profile(theta)
-    kappa = point_mass(theta)
+    kappa = sis_profile(theta)
+    # kappa = point_mass(theta)
     alpha = alpha_integral(theta, kappa)
     beta = lens_equation(theta, alpha)
-    im = plt.imshow(kappa[..., 1]**2 + kappa[..., 0]**2)
-    plt.colorbar(im)
-    plt.show()
-    alpha = alpha[..., 1]**2 + alpha[..., 0]**2 # scalar function of position
-    im = plt.imshow(alpha)
-    plt.colorbar(im)
-    plt.show()
-    im = plt.imshow(beta[..., 1]**2 + beta[..., 0]**2)
-    plt.colorbar(im)
+    plt.plot(beta[..., 0], beta[..., 1], "k.")
+    # im = plt.imshow(kappa[..., 1]**2 + kappa[..., 0]**2)
+    # plt.colorbar(im)
+    # plt.show()
+    # alpha = alpha[..., 1]**2 + alpha[..., 0]**2 # scalar function of position
+    # im = plt.imshow(alpha)
+    # plt.colorbar(im)
+    # plt.show()
+    # im = plt.imshow(beta[..., 1]**2 + beta[..., 0]**2)
+    # plt.colorbar(im)
     plt.show()
